@@ -15,11 +15,12 @@ Trong những năm qua, Transformer đã thường xuyên vượt qua CV. Lần 
 
 - Các paper liên quan cần đọc để hỗ trợ đọc hiểu paper trên : 
     - [ResNet-Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
+    - [MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications](https://arxiv.org/abs/1704.04861)
     - [ResNetXt-Aggregated Residual Transformations for Deep Neural Networks](https://arxiv.org/abs/1611.05431)
     - [Vision Transformer](https://paperswithcode.com/method/vision-transformer)
     - [Swin Transformer](https://arxiv.org/abs/2103.14030)
 
-    
+
 Authors:
 - Github: https://github.com/quynhtl
 - Email: tranlequynh.uet@gmail.com
