@@ -2,7 +2,7 @@ import tensorflow as tf
 
 
 def Conv_2D_Block(x, model_width, kernel, strides):
-    # 2D Convolutional Block with BatchNormalization
+    # 2D Convolutional Block với BatchNormalization
     x = tf.keras.layers.Conv2D(model_width, kernel, strides=strides, padding="same", kernel_initializer="he_normal")(x)
     x = tf.keras.layers.BatchNormalization()(x)
     x = tf.keras.layers.Activation('relu')(x)
@@ -10,16 +10,14 @@ def Conv_2D_Block(x, model_width, kernel, strides):
     return x
 
 def conv_block(inputs, num_filters):
-    # Construct Block of Convolutions without Pooling
-    # x        : block
-    # n_filters: number of filters
+    # Xây dựng khối conv không có Pooling
     conv = Conv_2D_Block(inputs, num_filters, (3, 3), (2, 2))
     conv = Conv_2D_Block(conv, num_filters, (3, 3), (1, 1))
 
     return conv
 
 def stem_bottleneck(inputs, num_filters):
-    # Construct the Stem Convolution Group
+    # Xây dựng Stem Convolution Group
     conv = Conv_2D_Block(inputs, num_filters, (7, 7), (2, 2))
     if conv.shape[1] <= 2:
         pool = tf.keras.layers.MaxPooling2D(pool_size=(1, 1), strides=(2, 2), padding="valid")(conv)
@@ -29,13 +27,13 @@ def stem_bottleneck(inputs, num_filters):
     return pool
 
 
-def grouped_convolution_block(inputs, num_filters, kernel_size, strides, cardinality):
-    # Adds a grouped convolution block
+def grouped_conv_block(inputs, num_filters, kernel_size, strides, cardinality):
+    # thêm những nhóm convolution block
     group_list = []
     grouped_channels = int(num_filters / cardinality)
 
     if cardinality == 1:
-        # When cardinality is 1, it is just a standard convolution
+        # Khi mà cardinality = 1, chỉ có standard convolution
         x = Conv_2D_Block(inputs, num_filters, (1, 1), strides=(strides, strides))
         x = Conv_2D_Block(x, grouped_channels, (kernel_size, kernel_size), (strides, strides))
 
@@ -55,11 +53,8 @@ def grouped_convolution_block(inputs, num_filters, kernel_size, strides, cardina
     return x
 
 def residual_block_bottleneck(inputs, num_filters):
-    # Construct a Residual Block of Convolutions
-    # x        : input into the block
-    # n_filters: number of filters
+    # Xây dựng một khối dư của Conv (Residual Block of Convolutions)
     shortcut = Conv_2D_Block(inputs, num_filters * 4, 1, 1)
-    #
     x = Conv_2D_Block(inputs, num_filters, (1, 1), (1, 1))
     x = Conv_2D_Block(x, num_filters, (3,3), (1, 1))
     x = Conv_2D_Block(x, num_filters * 4, (1, 1), (1, 1))
@@ -69,14 +64,10 @@ def residual_block_bottleneck(inputs, num_filters):
     return out
 
 def residual_block_bottleneck_Xt(inputs, num_filters, cardinality):
-    # Construct a Residual Block of Convolutions
-    # x        : input into the block
-    # n_filters: number of filters
+    # Xây dựng một khối dư của Conv (Residual Block of Convolutions)
     shortcut = Conv_2D_Block(inputs, num_filters * 2, (1, 1), (1, 1))
-    #
-    x = grouped_convolution_block(inputs, num_filters, 3, 1, cardinality)
+    x = grouped_conv_block(inputs, num_filters, 3, 1, cardinality)
     x = Conv_2D_Block(x, num_filters * 2, (1, 1), (1, 1))
-    #
     conv = tf.keras.layers.Add()([x, shortcut])
     out = tf.keras.layers.Activation('relu')(conv)
 
@@ -86,8 +77,7 @@ def residual_group_bottleneck(inputs, n_filters, n_blocks, conv=True):
     out = inputs
     for i in range(n_blocks):
         out = residual_block_bottleneck(out, n_filters)
-
-    # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
+    # Tăng gấp đôi size của filters và giảm feature maps còn 75% (strides=2, 2) để phù hợp với Residual Group tiếp theo
     if conv:
         out = conv_block(out, n_filters * 2)
 
@@ -97,15 +87,13 @@ def residual_group_bottleneck_Xt(inputs, num_filters, n_blocks, cardinality, con
     out = inputs
     for _ in range(n_blocks):
         out = residual_block_bottleneck_Xt(out, num_filters, cardinality)
-
-    # Double the size of filters and reduce feature maps by 75% (strides=2, 2) to fit the next Residual Group
     if conv:
         out = conv_block(out, num_filters * 2)
 
     return out
 
 def model50(inputs, num_filters):
-    # Construct the Learner
+    # build model resnet50
     x = residual_group_bottleneck(inputs, num_filters, 3)  # First Residual Block Group of 64 filters
     x = residual_group_bottleneck(x, num_filters * 2, 3)   # Second Residual Block Group of 128 filters
     x = residual_group_bottleneck(x, num_filters * 4, 5)    # Third Residual Block Group of 256 filters
@@ -114,7 +102,7 @@ def model50(inputs, num_filters):
     return out
 
 def modelXt50(inputs, num_filters, cardinality):
-    # Construct the Learner
+    # build model resnet50Xt
     x = residual_group_bottleneck(inputs, num_filters, 3, cardinality)  # First Residual Block Group of 64 filters
     x = residual_group_bottleneck(x, num_filters * 2, 3, cardinality) # Second Residual Block Group of 128 filters
     x = residual_group_bottleneck(x, num_filters * 4, 5, cardinality)  # Third Residual Block Group of 256 filters
@@ -123,14 +111,14 @@ def modelXt50(inputs, num_filters, cardinality):
     return out
 
 def classifier(inputs, class_number):
-    # Construct the Classifier Group
+    # Xây dựng nhóm phân loại 
     out = tf.keras.layers.Dense(class_number, activation='softmax')(inputs)
 
     return out
 
 
 def regressor(inputs, feature_number):
-    # Construct the Regressor Group
+    # Xây dựng nhóm hồi quy 
     out = tf.keras.layers.Dense(feature_number, activation='linear')(inputs)
 
     return out
@@ -172,7 +160,7 @@ class ResNet:
         stem_b = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
         x = model50(stem_b, self.num_filters)  # The learner
         outputs = MLP(x,self.pooling,self.dropout_rate,output_nums,problem_type)
-        # Instantiate the Model
+        # Khởi tạo Model
         model = tf.keras.Model(inputs, outputs)
 
         return model
