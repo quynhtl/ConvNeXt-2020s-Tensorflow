@@ -13,6 +13,11 @@ Trong những năm qua, Transformer đã thường xuyên vượt qua CV. Lần 
 
 - Bản tóm tắt ý chính của paper: [ConvNeXt 2020s sơ lược ](https://docs.google.com/document/d/1IoyAoVkJoccDNPd1csJ1SD3LWshVJb_sB1A3_ylDZf8/edit?usp=sharing)
 
+- Các paper liên quan cần đọc để hỗ trợ đọc hiểu paper trên : 
+    - [ResNet-Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
+    - [ResNetXt-Aggregated Residual Transformations for Deep Neural Networks](https://arxiv.org/abs/1611.05431)
+    - [Vision Transformer](https://paperswithcode.com/method/vision-transformer)
+    - [Swin Transformer](https://arxiv.org/abs/2103.14030)
 Authors:
 - Github: https://github.com/quynhtl
 - Email: tranlequynh.uet@gmail.com
