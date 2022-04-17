@@ -3,27 +3,27 @@ from tensorflow import keras
 from tensorflow.keras import Model, layers
 
 #（1）Khối chập đầu tiên mà hình ảnh đầu vào đi qua
-def pre_Conv(inputs, out_channel):
+def replace_Conv(inputs, out_channel):
 
-    # 4 * 4 tích chập + chuẩn hóa
+    # 4 * 4 tích chập + chuẩn hóa 
     x = layers.Conv2D(filters=out_channel,  # Số kênh của bản đồ tính năng đầu ra
                       kernel_size=(4,4),
                       strides=4,  # lấy mẫu xuống
                       padding='same')(inputs)
-
+    # Thay thế lớp BN thành lớp LN
     x = layers.LayerNormalization()(x)
 
     return x
 
 #（2）ConvNeXt Block
-def block(inputs, dropout_rate=0.2, layer_scale_init_value=1e-6):
+def Conv_block(inputs, dropout_rate=0.2, layer_scale_init_value=1e-6):
     '''
     layer_scale_init_value Giá trị khởi tạo của gama chia tỷ lệ
     '''
     # Nhận số kênh của bản đồ tính năng đầu vào
     dim = inputs.shape[-1]
 
-    # cạnh dư
+    # khối dư
     residual = inputs
 
     # 7 * 7 tích chập theo chiều sâu
@@ -78,7 +78,7 @@ def stage(x, num, out_channel, downsampe=True):
 
     # Lặp lại số lần khối, mỗi lần số lượng kênh đầu ra giống nhau
     for _ in range(num):
-        x = block(x)
+        x = Conv_block(x)
 
     return x
 
@@ -89,7 +89,7 @@ def convnext(input_shape, classes):  # Hình dạng hình ảnh đầu vào và 
     inputs = keras.Input(shape=input_shape)
 
     # [224,224,3]==>[56,56,96]
-    x = pre_Conv(inputs, out_channel=96)
+    x = replace_Conv(inputs, out_channel=96)
     # [56,56,96]==>[56,56,96]
     x = stage(x, num=3, out_channel=96, downsampe=False)
     # [56,56,96]==>[28,28,192]
@@ -117,6 +117,6 @@ def convnext(input_shape, classes):  # Hình dạng hình ảnh đầu vào và 
 if __name__ == '__main__':
 
     # Xây dựng mạng, truyền hình ảnh đầu vào và số lượng phân loại của đầu ra cuối cùng
-    model = convnext(input_shape=[224,224,3], classes=1000)
+    model = convnext(input_shape=[224,224,3], classes=10)
 
     model.summary()  # Xem cấu trúc mạng

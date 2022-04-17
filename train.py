@@ -1,5 +1,5 @@
 from model.convNet import ConvNeXt
-from model.resnet50_resnetXt import ResneXt, Resnet50
+from model.resnet50_resnet50Xt import ResneXt, Resnet50
 from tensorflow import keras
 from tensorflow.keras.losses import SparseCategoricalCrossentropy
 from tensorflow.keras.preprocessing import image_dataset_from_directory
