@@ -1,9 +1,11 @@
 # ConvNeXt 2020s using Tensorflow
 
+Trong những năm qua, Transformer đã thường xuyên vượt qua CV. Lần đầu tiên nó bị Google ViT vượt qua trong phân loại hình ảnh và sau đó được Microsoft Swin Transformer giành chiến thắng trong lĩnh vực phát hiện đối tượng và phân đoạn hình ảnh. Khi ngày càng có nhiều học giả tham gia vào nghiên cứu trực quan Transformer. Tại thời điểm này, ConvNeXts là viết của Convolutional Neural Network tiêu chuẩn đã quay trở lại và lợi hại hơn xưa nhé :D 
+
 <p align="center">
     <img src='https://scontent.xx.fbcdn.net/v/t1.15752-9/277853930_1139130046931071_7242626931798359416_n.png?stp=dst-png_s403x403&_nc_cat=111&ccb=1-5&_nc_sid=aee45a&_nc_ohc=dDjTJ9B7qlEAX-hK7-i&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AVIm6dItNCYnyH1KNOhMTIgbaQp8V1fFBtxGCUSDkmrr8g&oe=627F66EF' width=500 height=300 class="center">
 </p>
-Trong những năm qua, Transformer đã thường xuyên vượt qua CV. Lần đầu tiên nó bị Google ViT vượt qua trong phân loại hình ảnh và sau đó được Microsoft Swin Transformer giành chiến thắng trong lĩnh vực phát hiện đối tượng và phân đoạn hình ảnh. Khi ngày càng có nhiều học giả tham gia vào nghiên cứu trực quan Transformer. Tại thời điểm này, ConvNeXts là viết của Convolutional Neural Network tiêu chuẩn đã quay trở lại và lợi hại hơn xưa nhé :D 
+
 
 - Paper gốc : [A ConvNet for the 2020s](https://arxiv.org/abs/2201.03545)
 
