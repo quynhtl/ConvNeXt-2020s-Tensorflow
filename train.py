@@ -1,10 +1,10 @@
-from model.convNet import ConvNeXt
-from model.resnet50_resnet50Xt import ResneXt, Resnet50
+from model.convNet import *
+from model.resnet50_resnet50Xt import ResNeXt, ResNet
+from data import *
 from tensorflow import keras
 from tensorflow.keras.losses import SparseCategoricalCrossentropy
 from tensorflow.keras.preprocessing import image_dataset_from_directory
 from tensorflow.python.data import Dataset
-from tensorflow.keras.optimizers import AdamW
 import numpy as np
 
 import os
@@ -28,6 +28,8 @@ if __name__ == "__main__":
     parser.add_argument("--epochs", default=1000, type=int)
     parser.add_argument('--num-classes', default=10,
                         type=int, help='Number of classes')
+    parser.add_argument('--num-filters', default=16,
+    type=int, help='Number of filters')
     parser.add_argument('--image-size', default=224,
                         type=int, help='Size of input image')
     parser.add_argument('--image-channels', default=3,
@@ -37,9 +39,11 @@ if __name__ == "__main__":
     parser.add_argument('--valid-folder', default='', type=str,
                         help='Where validation data is located')
     parser.add_argument('--class-mode', default='categorical', type=str, help='Class mode to compile')
+    parser.add_argument('--problem-type', default='Classification', type=str)
     parser.add_argument('--model-folder', default='output/',
                         type=str, help='Folder to save trained model')  
-
+    parser.add_argument('--cardinality', default=32,
+                        type=int, help='cardinality')
     args = parser.parse_args()
 
     # Project Description
@@ -62,11 +66,15 @@ if __name__ == "__main__":
     epoch = args.epochs
     class_mode = args.class_mode
     lr = args.lr
+    num_filters = args.num_filters
+    problem_type = args.problem_type
+    cardinality= args.cardinality
+
 
     # Data loader
     if args.train_folder != '' and args.valid_folder != '':
         # Load train images from folder
-        train_ds = image_dataset_from_directory(
+        train_ds_mu = image_dataset_from_directory(
             args.train_folder,
             seed=123,
             image_size=(image_size, image_size),
@@ -80,36 +88,55 @@ if __name__ == "__main__":
             shuffle=True,
             batch_size=args.batch_size,
         )
+
     else:
         print("Data folder is not set. Use CIFAR 10 dataset")
 
-        num_classes = 10
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+        y_train = tf.keras.utils.to_categorical(y_train, num_classes=10)
+        y_test = tf.keras.utils.to_categorical(y_test, num_classes=10)
 
-        # We should pass the image size (--image-size) argument to running command is 32x32x3 while using Cifar10
-        # For example: python .\train.py  --num-classes 2 --batch-size 10 --image-size 32  --epochs 200 
-        (x_train, y_train), (x_val, y_val) = keras.datasets.cifar10.load_data()
-        
-        # Modify the image size if you do not want to pass the default value (32)
-        x_train = (x_train.reshape(-1, image_size, image_size,
-                                   image_channels)).astype(np.float32)
-        x_val = (x_val.reshape(-1, image_size, image_size,
-                               image_channels)).astype(np.float32)
-   
-        # create dataset
-        train_ds = Dataset.from_tensor_slices((x_train, y_train))
-        train_ds = train_ds.batch(batch_size)
+        AUTO = tf.data.AUTOTUNE
+        BATCH_SIZE = 32
+        IMG_SIZE = 224
 
-        val_ds = Dataset.from_tensor_slices((x_val, y_val))
-        val_ds = val_ds.batch(batch_size)
+        def preprocess_image(image, label):
+            image = tf.image.resize(image, (IMG_SIZE, IMG_SIZE))
+            image = tf.image.convert_image_dtype(image, tf.float32) / 255.0
+            return image, label
 
+        val_samples = 2000
+        x_val, y_val = x_train[:val_samples], y_train[:val_samples]
+        new_x_train, new_y_train = x_train[val_samples:], y_train[val_samples:]
+
+        train_ds_one = (
+            tf.data.Dataset.from_tensor_slices((new_x_train, new_y_train))
+            .shuffle(BATCH_SIZE * 100)
+            .batch(BATCH_SIZE)
+        )
+        train_ds_two = (
+            tf.data.Dataset.from_tensor_slices((new_x_train, new_y_train))
+            .shuffle(BATCH_SIZE * 100)
+            .batch(BATCH_SIZE)
+        )
+        # Because we will be mixing up the images and their corresponding labels, we will be
+        # combining two shuffled datasets from the same training data.
+        train_ds = tf.data.Dataset.zip((train_ds_one, train_ds_two))
+
+        val_ds = tf.data.Dataset.from_tensor_slices((x_val, y_val)).batch(BATCH_SIZE)
+
+        test_ds = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(BATCH_SIZE)
+        train_ds_mu = train_ds.map(
+            lambda ds_one, ds_two: mix_up(ds_one, ds_two, alpha=0.2), num_parallel_calls=AUTO
+        )
     if args.model == 'resnet50':
-        model = Resnet50(input_shape=(image_size,
-                             image_size, image_channels),
-                             num_classes = num_classes)
+        model = ResNet(image_size, image_size, image_channels, num_filters, problem_type=problem_type, onum_classes=num_classes, pooling='avg', dropout_rate=False).ResNet50()
     elif args.model == 'resnext':
-        model = ResneXt()
+        model = ResNeXt(image_size, image_size, image_channels, num_filters,cardinality=32, problem_type=problem_type, onum_classes=num_classes, pooling='avg', dropout_rate=False).ResNetXt50()
     else:
-        model = ConvNeXt(
+        model = convnext(
+            input_shape=(image_size,
+                             image_size, image_channels),
             num_classes = num_classes,
             image_size = image_size
         )
@@ -117,14 +144,14 @@ if __name__ == "__main__":
     model.build(input_shape=(None, image_size,
                              image_size, image_channels))
 
-    optimizer = AdamW(learning_rate=args.lr)
+    optimizer= tf.keras.optimizers.experimental.AdamW(learning_rate=args.lr)
 
     loss = SparseCategoricalCrossentropy()
     model.compile(optimizer, loss=loss,
                   metrics=['accuracy'])
 
     # Traning
-    model.fit(train_ds,
+    model.fit(train_ds_mu,
               epochs=args.epochs,
               batch_size=batch_size,
               validation_data=val_ds)
