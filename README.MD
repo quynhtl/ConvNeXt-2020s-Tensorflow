@@ -18,6 +18,8 @@ Trong những năm qua, Transformer đã thường xuyên vượt qua CV. Lần 
     - [ResNetXt-Aggregated Residual Transformations for Deep Neural Networks](https://arxiv.org/abs/1611.05431)
     - [Vision Transformer](https://paperswithcode.com/method/vision-transformer)
     - [Swin Transformer](https://arxiv.org/abs/2103.14030)
+
+    
 Authors:
 - Github: https://github.com/quynhtl
 - Email: tranlequynh.uet@gmail.com
