@@ -1,21 +1,25 @@
-# Project Name <--- FIXME
-
-Library Logo <--- **FIXME**
+# ConvNeXt 2020s using Tensorflow
 
 <p align="center">
-    <img src='https://storage.googleapis.com/protonx-cloud-storage/transformer/protonx-transf.png' width=200 class="center">
+    <img src='https://scontent.xx.fbcdn.net/v/t1.15752-9/277853930_1139130046931071_7242626931798359416_n.png?stp=dst-png_s403x403&_nc_cat=111&ccb=1-5&_nc_sid=aee45a&_nc_ohc=dDjTJ9B7qlEAX-hK7-i&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AVIm6dItNCYnyH1KNOhMTIgbaQp8V1fFBtxGCUSDkmrr8g&oe=627F66EF' width=200 class="center">
 </p>
 
-Description about your project. Why do you choose to build this?  <--- **FIXME**
+Paper gốc : [ConvNeXt 2020](https://arxiv.org/abs/2201.03545)
+
+Translate VietNamese by me: [ConvNeXt 2020 translate ](https://docs.google.com/document/d/10nPGRRUDybxll96e17RcDjnPkpTe2LfHWDWu7EWvpSQ/edit?usp=sharing)
+
+Bản tóm tắt ý chính của paper: [ConvNeXt 2020 sơ lược ](https://docs.google.com/document/d/1IoyAoVkJoccDNPd1csJ1SD3LWshVJb_sB1A3_ylDZf8/edit?usp=sharing)
+
+Authors:
+- Github: https://github.com/quynhtl
+- Email: tranlequynh.uet@gmail.com
+<!-- Description about your project. Why do you choose to build this?  <--- **FIXME**
 
 Slide about your project (if it's available) <--- **FIXME**
 
 Architecture Image <--- **FIXME**
 
 
-Authors:
-- Github: members github name <--- **FIXME**
-- Email: members emails <--- **FIXME**
 
 Advisors:
 - Github: advisor github name <--- **FIXME**
@@ -121,6 +125,6 @@ In the `./folder-name` **(FIXME)** folder please run:
 
 ```bash
 pytest
-```
+``` -->
 
 
