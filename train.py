@@ -83,7 +83,7 @@ if __name__ == "__main__":
     #     model = ResNeXt(image_size, image_size, image_channels, num_filters,cardinality=32, problem_type=problem_type, onum_classes=num_classes, pooling='avg', dropout_rate=False).ResNetXt50()
     # else:
     model = convnext(
-        input_shape=[224,224,3],
+        input_shape=[image_size,image_size,image_channels],
         classes = args.num_classes,
     )
 
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     # Traning
     
     model.fit(train_ds_cmu,
-              epochs=10,
+              epochs=epoch,
               validation_data=val_ds)
 
     # Save model
