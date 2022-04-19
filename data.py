@@ -135,7 +135,7 @@ def load_dataset_cifar10(batch_size):
     return train_ds_cmu, train_ds_simple, val_ds
 
 
-def load_dataset_original(train_folder,valid_folder,batch_size,image_size):
+def load_dataset_original():
     train_datagen = ImageDataGenerator(rotation_range=15,
                                     rescale=1./255,
                                     shear_range=0.1,
@@ -145,19 +145,5 @@ def load_dataset_original(train_folder,valid_folder,batch_size,image_size):
                                     height_shift_range=0.1)
     
     val_datagen = ImageDataGenerator(rescale=1./255)
-    train_ds = train_datagen.flow_from_directory(
-        train_folder,
-        seed=123,
-        image_size=(image_size, image_size),
-        shuffle=True,
-        batch_size=batch_size,
-    )
-    val_ds = val_datagen.flow_from_directory(
-        valid_folder,
-        seed=123,
-        image_size=(image_size, image_size),
-        shuffle=True,
-        batch_size=batch_size,
-    )
-    return train_ds, val_ds
+    return train_datagen, val_datagen
 
