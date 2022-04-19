@@ -15,10 +15,15 @@ Trong những năm qua, Transformer đã thường xuyên vượt qua CV. Lần 
 
 
 Sơ đồ mô hình mạng ConvNeXt 2020s: 
+colab 
 
 <p align="center">
     <img src='./data/test/convnext.png' width=640 height = 820 class="center">
 </p>
+
+Review training on colab:
+
+<a href="https://colab.research.google.com/drive/1f0w9hqypkrU12ggkD7q8EZMkfDAzEakj#scrollTo=oFrHbd-sR8Rv"><img src="https://storage.googleapis.com/protonx-cloud-storage/colab_favicon_256px.png" width=80> </a>
 
 
 - Các paper liên quan cần đọc để hỗ trợ đọc hiểu paper trên : 
