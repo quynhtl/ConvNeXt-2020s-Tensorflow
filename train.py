@@ -1,6 +1,6 @@
 from model.convNeXt_2020s import convnext
 from model.resnet50_resnet50Xt import ResNeXt, ResNet
-from data import load_dataset_original, load_dataset_cifar10
+from data import  load_dataset_original, load_dataset_cifar10
 from tensorflow.keras.losses import SparseCategoricalCrossentropy
 import tensorflow as tf
 from argparse import ArgumentParser
@@ -73,16 +73,8 @@ if __name__ == "__main__":
     # Data loader
     if args.train_folder != '' and args.valid_folder != '':
         # Load train images from folder
-        train_datagen = ImageDataGenerator(rotation_range=15,
-                                            rescale=1./255,
-                                            shear_range=0.1,
-                                            zoom_range=0.2,
-                                            horizontal_flip=True,
-                                            width_shift_range=0.1,
-                                            height_shift_range=0.1)
-        
-        val_datagen = ImageDataGenerator(rescale=1./255)
-        #Load train set
+        train_datagen,val_datagen =  load_dataset_original()
+            #Load train set
         train_ds_cmu = train_datagen.flow_from_directory(
             train_folder,
             target_size=(args.image_size, args.image_size),
@@ -132,10 +124,10 @@ if __name__ == "__main__":
     model.summary()
     # Traning
     
-    model.fit(train_ds_cmu,
-              epochs=epoch,
-              validation_data=val_ds)
+    # model.fit(train_ds_cmu,
+    #           epochs=epoch,
+    #           validation_data=val_ds)
 
-    # Save model
-    model.save(args.model_folder)
+    # # Save model
+    # model.save(args.model_folder)
 
