@@ -11,7 +11,7 @@ import tensorflow_addons as tfa
 import os
 from optimizer_adamW import WeightDecayScheduler, lr_schedule, wd_schedule
 from tensorflow.python.data import Dataset
-import numpy as np
+from keras_preprocessing.image import ImageDataGenerator
 
 
 
@@ -73,22 +73,32 @@ if __name__ == "__main__":
     # Data loader
     if args.train_folder != '' and args.valid_folder != '':
         # Load train images from folder
-        train_datagen, val_datagen = load_dataset_original()
-        train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-            train_datagen,
-            seed=123,
-            image_size=(args.image_size, args.image_size),
+        train_datagen = ImageDataGenerator(rotation_range=15,
+                                            rescale=1./255,
+                                            shear_range=0.1,
+                                            zoom_range=0.2,
+                                            horizontal_flip=True,
+                                            width_shift_range=0.1,
+                                            height_shift_range=0.1)
+        
+        val_datagen = ImageDataGenerator(rescale=1./255)
+        #Load train set
+        train_ds = train_datagen.flow_from_directory(
+            train_folder,
+            target_size=(image_size, image_size),
+            batch_size=batch_size,
+            class_mode='categorical',
             shuffle=True,
-            batch_size=args.batch_size,
+            seed=123,
         )
-
-        # Load Validation images from folder
-        val_ds = tf.keras.preprocessing.image_dataset_from_directory(
-            val_datagen,
-            seed=123,
-            image_size=(args.image_size, args.image_size),
+        #Load test set
+        val_ds = val_datagen.flow_from_directory(
+            valid_folder,
+            target_size=(image_size, image_size),
+            batch_size=batch_size,
+            class_mode='categorical',
             shuffle=True,
-            batch_size= args.batch_size,
+            seed=123,
         )
 
     else:
