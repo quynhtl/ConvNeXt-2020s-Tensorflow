@@ -189,15 +189,15 @@ class ResNeXt:
 
         return model
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
-    length = 224
-    width = 224
-    model_name = 'ResNetXt' 
-    model_width = 16  
-    num_channel = 1  
-    problem_type = 'Classification' 
-    output_nums = 100  
-    #Model = ResNeXt(length, width, num_channel, model_width, cardinality=8, problem_type=problem_type, output_nums=output_nums, pooling='avg', dropout_rate=False).ResNeXt50()
-    Model = ResNet(length, width, num_channel, model_width, problem_type=problem_type, output_nums=output_nums, pooling='avg', dropout_rate=False).ResNet50()
-    Model.summary()
+#     length = 224
+#     width = 224
+#     model_name = 'ResNetXt' 
+#     model_width = 16  
+#     num_channel = 1  
+#     problem_type = 'Classification' 
+#     output_nums = 100  
+#     #Model = ResNeXt(length, width, num_channel, model_width, cardinality=8, problem_type=problem_type, output_nums=output_nums, pooling='avg', dropout_rate=False).ResNeXt50()
+#     Model = ResNet(length, width, num_channel, model_width, problem_type=problem_type, output_nums=output_nums, pooling='avg', dropout_rate=False).ResNet50()
+#     Model.summary()

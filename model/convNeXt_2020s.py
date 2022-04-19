@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import Model, layers
+from tensorflow.keras.layers.experimental.preprocessing import Normalization, Resizing, RandomFlip, RandomRotation, RandomZoom
 
 #（1）Khối chập đầu tiên mà hình ảnh đầu vào đi qua
 def replace_Conv(inputs, out_channel):
@@ -87,9 +88,21 @@ def convnext(input_shape, classes):  # Hình dạng hình ảnh đầu vào và 
 
     # Xây dựng lớp đầu vào
     inputs = keras.Input(shape=input_shape)
-
+    data_augmentation = tf.keras.Sequential(
+        [
+            Normalization(),
+            # Resizing(image_size, image_size),
+            RandomFlip("horizontal"),
+            RandomRotation(factor=0.02),
+            RandomZoom(
+                height_factor=0.2, width_factor=0.2
+            ),
+        ],
+        name="data_augmentation",
+    )
+    augumented_images= data_augmentation(inputs)
     # [224,224,3]==>[56,56,96]
-    x = replace_Conv(inputs, out_channel=96)
+    x = replace_Conv(augumented_images, out_channel=96)
     # [56,56,96]==>[56,56,96]
     x = stage(x, num=3, out_channel=96, downsampe=False)
     # [56,56,96]==>[28,28,192]
@@ -114,9 +127,9 @@ def convnext(input_shape, classes):  # Hình dạng hình ảnh đầu vào và 
 
 #（6）Summary model
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
-    # Xây dựng mạng, truyền hình ảnh đầu vào và số lượng phân loại của đầu ra cuối cùng
-    model = convnext(input_shape=[224,224,3], classes=10)
+#     # Xây dựng mạng, truyền hình ảnh đầu vào và số lượng phân loại của đầu ra cuối cùng
+#     model = convnext(input_shape=[224,224,3], classes=10)
 
-    model.summary()  # Xem cấu trúc mạng
+#     model.summary()  # Xem cấu trúc mạng

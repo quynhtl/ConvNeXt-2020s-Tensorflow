@@ -7,9 +7,7 @@ np.random.seed(42)
 tf.random.set_seed(42)
 AUTO = tf.data.AUTOTUNE
 
-
 image_size = 224
-
 def preprocess_image(image,label):
     image = tf.image.resize(image, (image_size, image_size))
     image = tf.image.convert_image_dtype(image, tf.float32) / 255.0

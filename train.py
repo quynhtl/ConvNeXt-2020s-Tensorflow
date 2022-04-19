@@ -1,18 +1,22 @@
-from model.convNeXt_2020s import *
+from model.convNeXt_2020s import convnext
 from model.resnet50_resnet50Xt import ResNeXt, ResNet
-from data import load_dataset_original, load_dataset_cifar10,cutmix,preprocess_image
+from data import load_dataset_original, load_dataset_cifar10
 from tensorflow.keras.losses import SparseCategoricalCrossentropy
 import tensorflow as tf
 from argparse import ArgumentParser
 from tensorflow.keras.optimizers import Adam
-# pip install keras-adamw
-from keras_adamw import AdamW
+# conda deactivate (trong TH đang ở môi trg khác dùng lệnh này để thoát khỏi enviroment đó r mới cài thư viện dưới nhé)
+# pip install tensorflow-addons
+import tensorflow_addons as tfa
+import os
+from optimizer_adamW import WeightDecayScheduler, lr_schedule, wd_schedule
 from tensorflow.python.data import Dataset
-
 import numpy as np
 
 
+
 if __name__ == "__main__":
+    os.environ["CUDA_VISIBLE_DEVICES"] = '1'
     parser = ArgumentParser()
     
     # Arguments users used when running command lines
@@ -66,31 +70,39 @@ if __name__ == "__main__":
     problem_type = args.problem_type
     cardinality= args.cardinality
     AUTO = tf.data.AUTOTUNE
-
+    image_size = 224
     # Data loader
     if args.train_folder != '' and args.valid_folder != '':
         # Load train images from folder
-        train_ds, val_ds = load_dataset_original(train_folder,valid_folder,batch_size)
+        train_ds, val_ds = load_dataset_original(train_folder,valid_folder,batch_size,image_size)
 
     else:
         print("Data folder is not set. Use CIFAR 10 dataset")
         train_ds_cmu, train_ds_simple, val_ds = load_dataset_cifar10(batch_size)
 
 
-    # if args.model == 'resnet50':
-    #     model = ResNet(image_size, image_size, image_channels, num_filters, problem_type=problem_type, onum_classes=num_classes, pooling='avg', dropout_rate=False).ResNet50()
-    # elif args.model == 'resnext':
-    #     model = ResNeXt(image_size, image_size, image_channels, num_filters,cardinality=32, problem_type=problem_type, onum_classes=num_classes, pooling='avg', dropout_rate=False).ResNetXt50()
-    # else:
-    model = convnext(
-        input_shape=[image_size,image_size,image_channels],
-        classes = args.num_classes,
-    )
+    if args.model == 'resnet50':
+        model = ResNet(image_size, image_size, image_channels, num_filters, problem_type=problem_type, onum_classes=num_classes, pooling='avg', dropout_rate=False).ResNet50()
+    elif args.model == 'resnext':
+        model = ResNeXt(image_size, image_size, image_channels, num_filters,cardinality=32, problem_type=problem_type, onum_classes=num_classes, pooling='avg', dropout_rate=False).ResNetXt50()
+    else:
+        model = convnext(
+            input_shape=[image_size,image_size,image_channels],
+            classes = args.num_classes,
+        )
 
-    #optimizer= AdamW(learning_rate=args.lr)
-    optimizer = Adam(learning_rate=args.lr)
+    # optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
+    optimizer =  tfa.optimizers.AdamW(learning_rate=lr_schedule(0), weight_decay=wd_schedule(0))
+    
+    tb_callback = tf.keras.callbacks.TensorBoard(os.path.join('logs', 'adamw'),
+                                                 profile_batch=0)
+    lr_callback = tf.keras.callbacks.LearningRateScheduler(lr_schedule)
+    
+    wd_callback = WeightDecayScheduler(wd_schedule)
+
+
     loss = SparseCategoricalCrossentropy()
-    model.compile(optimizer, loss=loss,
+    model.compile(optimizer=optimizer, loss=loss,
                   metrics=['accuracy'])
     # model.summary()
     # Traning
