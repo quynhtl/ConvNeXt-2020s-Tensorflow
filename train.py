@@ -76,7 +76,6 @@ if __name__ == "__main__":
         train_datagen, val_datagen = load_dataset_original()
         train_ds = tf.keras.preprocessing.image_dataset_from_directory(
             train_datagen,
-            subset="training",
             seed=123,
             image_size=(args.image_size, args.image_size),
             shuffle=True,
@@ -86,7 +85,6 @@ if __name__ == "__main__":
         # Load Validation images from folder
         val_ds = tf.keras.preprocessing.image_dataset_from_directory(
             val_datagen,
-            subset="validation",
             seed=123,
             image_size=(args.image_size, args.image_size),
             shuffle=True,
