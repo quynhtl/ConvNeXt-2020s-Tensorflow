@@ -18,7 +18,7 @@ Sơ đồ mô hình mạng ConvNeXt 2020s:
 colab 
 
 <p align="center">
-    <img src='./data/test/convnext.png' width=640 height = 820 class="center">
+    <img src='./data/test/c.png' width=960 height = 540 class="center">
 </p>
 
 Review training on colab:
