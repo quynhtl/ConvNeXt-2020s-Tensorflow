@@ -83,7 +83,7 @@ if __name__ == "__main__":
         
         val_datagen = ImageDataGenerator(rescale=1./255)
         #Load train set
-        train_ds = train_datagen.flow_from_directory(
+        train_ds_cmu = train_datagen.flow_from_directory(
             train_folder,
             target_size=(image_size, image_size),
             batch_size=batch_size,
