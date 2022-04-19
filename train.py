@@ -80,7 +80,6 @@ if __name__ == "__main__":
             seed=123,
             image_size=(args.image_size, args.image_size),
             shuffle=True,
-            validation_split = args.validation_split,
             batch_size=args.batch_size,
         )
 
@@ -91,7 +90,6 @@ if __name__ == "__main__":
             seed=123,
             image_size=(args.image_size, args.image_size),
             shuffle=True,
-            validation_split = args.validation_split,
             batch_size= args.batch_size,
         )
 
