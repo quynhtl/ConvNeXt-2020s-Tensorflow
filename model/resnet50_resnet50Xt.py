@@ -129,11 +129,11 @@ def MLP(x,pooling,dropout_rate,output_nums,problem_type):
         x = tf.keras.layers.GlobalAveragePooling2D()(x)
     elif pooling == 'max':
         x = tf.keras.layers.GlobalMaxPooling2D()(x)
-    # Final Dense Outputting Layer for the outputs
+    # Final Dense Outputting Layer cho outputs
     x = tf.keras.layers.Flatten(name='flatten')(x)
     if dropout_rate:
         x = tf.keras.layers.Dropout(dropout_rate, name='Dropout')(x)
-    # Problem Types
+    # Problem Types : Classification
     outputs = tf.keras.layers.Dense(output_nums, activation='linear')(x)
     if problem_type == 'Classification':
         outputs = tf.keras.layers.Dense(output_nums, activation='softmax')(x)
@@ -158,7 +158,7 @@ class ResNet:
     def ResNet50(self):
         inputs = tf.keras.Input((self.length, self.width, self.num_channel))  # The input tensor
         stem_b = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
-        x = model50(stem_b, self.num_filters)  # The learner
+        x = model50(stem_b, self.num_filters)  
         outputs = MLP(x,self.pooling,self.dropout_rate,self.output_nums,self.problem_type)
         # Khởi tạo Model
         model = tf.keras.Model(inputs, outputs)
@@ -182,9 +182,9 @@ class ResNeXt:
     def ResNeXt50(self):
         inputs = tf.keras.Input((self.length, self.width, self.num_channel))  # The input tensor
         stem_b = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
-        x = modelXt50(stem_b, self.num_filters, self.cardinality)  # The learner
+        x = modelXt50(stem_b, self.num_filters, self.cardinality)
         outputs = MLP(x, self.pooling,self.dropout_rate,self.output_nums,self.problem_type)
-        # Instantiate the Model
+        # khởi tạo Model
         model = tf.keras.Model(inputs, outputs)
 
         return model
