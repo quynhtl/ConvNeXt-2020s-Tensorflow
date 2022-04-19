@@ -91,14 +91,14 @@ if __name__ == "__main__":
             classes = args.num_classes,
         )
 
-    # optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
-    optimizer =  tfa.optimizers.AdamW(learning_rate=lr_schedule(0), weight_decay=wd_schedule(0))
+    optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
+    # optimizer =  tfa.optimizers.AdamW(learning_rate=lr_schedule(0), weight_decay=wd_schedule(0))
     
-    tb_callback = tf.keras.callbacks.TensorBoard(os.path.join('logs', 'adamw'),
-                                                 profile_batch=0)
-    lr_callback = tf.keras.callbacks.LearningRateScheduler(lr_schedule)
+    # tb_callback = tf.keras.callbacks.TensorBoard(os.path.join('logs', 'adamw'),
+    #                                              profile_batch=0)
+    # lr_callback = tf.keras.callbacks.LearningRateScheduler(lr_schedule)
     
-    wd_callback = WeightDecayScheduler(wd_schedule)
+    # wd_callback = WeightDecayScheduler(wd_schedule)
 
 
     loss = SparseCategoricalCrossentropy()
@@ -107,10 +107,10 @@ if __name__ == "__main__":
     # model.summary()
     # Traning
     
-    model.fit(train_ds_cmu,
-              epochs=epoch,
-              validation_data=val_ds)
+    # model.fit(train_ds_cmu,
+    #           epochs=epoch,
+    #           validation_data=val_ds)
 
-    # Save model
-    model.save(args.model_folder)
+    # # Save model
+    # model.save(args.model_folder)
 

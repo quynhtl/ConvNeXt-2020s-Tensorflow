@@ -8,7 +8,7 @@ tf.random.set_seed(42)
 AUTO = tf.data.AUTOTUNE
 
 image_size = 224
-def preprocess_image(image,label):
+def preprocess_image(image,label,image_size):
     image = tf.image.resize(image, (image_size, image_size))
     image = tf.image.convert_image_dtype(image, tf.float32) / 255.0
     return image, label
@@ -19,7 +19,7 @@ def sample_beta_distribution(size, concentration_0=0.2, concentration_1=0.2):
     return gamma_1_sample / (gamma_1_sample + gamma_2_sample)
 
 
-def get_box(lambda_value):
+def get_box(lambda_value,image_size):
     cut_rat = tf.math.sqrt(1.0 - lambda_value)
 
     cut_w = image_size  * cut_rat  # rw
@@ -47,7 +47,7 @@ def get_box(lambda_value):
     return boundaryx1, boundaryy1, target_h, target_w
 
 
-def cutmix(train_ds_one, train_ds_two):
+def cutmix(train_ds_one, train_ds_two,image_size):
     (image1, label1), (image2, label2) = train_ds_one, train_ds_two
 
     alpha = [0.25]
