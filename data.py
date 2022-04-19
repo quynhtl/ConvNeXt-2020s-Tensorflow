@@ -135,7 +135,7 @@ def load_dataset_cifar10(batch_size):
     return train_ds_cmu, train_ds_simple, val_ds
 
 
-def load_dataset_original(train_folder,valid_folder,batch_size):
+def load_dataset_original(train_folder,valid_folder,batch_size,image_size):
     train_datagen = ImageDataGenerator(rotation_range=15,
                                     rescale=1./255,
                                     shear_range=0.1,

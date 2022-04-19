@@ -74,7 +74,7 @@ if __name__ == "__main__":
     # Data loader
     if args.train_folder != '' and args.valid_folder != '':
         # Load train images from folder
-        train_ds, val_ds = load_dataset_original(train_folder,valid_folder,batch_size)
+        train_ds, val_ds = load_dataset_original(train_folder,valid_folder,batch_size,image_size)
 
     else:
         print("Data folder is not set. Use CIFAR 10 dataset")
