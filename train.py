@@ -70,24 +70,29 @@ if __name__ == "__main__":
     problem_type = args.problem_type
     cardinality= args.cardinality
     AUTO = tf.data.AUTOTUNE
-    image_size = 224
     # Data loader
     if args.train_folder != '' and args.valid_folder != '':
         # Load train images from folder
         train_datagen, val_datagen = load_dataset_original()
-        train_ds = train_datagen.flow_from_directory(
-            train_folder,
+        train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+            train_datagen,
+            subset="training",
             seed=123,
-            image_size=(image_size, image_size),
+            image_size=(args.image_size, args.image_size),
             shuffle=True,
-            batch_size=batch_size,
+            validation_split = args.validation_split,
+            batch_size=args.batch_size,
         )
-        val_ds = val_datagen.flow_from_directory(
-            valid_folder,
+
+        # Load Validation images from folder
+        val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+            val_datagen,
+            subset="validation",
             seed=123,
-            image_size=(image_size, image_size),
+            image_size=(args.image_size, args.image_size),
             shuffle=True,
-            batch_size=batch_size,
+            validation_split = args.validation_split,
+            batch_size= args.batch_size,
         )
 
     else:
