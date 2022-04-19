@@ -118,8 +118,8 @@ if __name__ == "__main__":
     # wd_callback = WeightDecayScheduler(wd_schedule)
 
 
-    loss = SparseCategoricalCrossentropy()
-    model.compile(optimizer=optimizer, loss=loss,
+    # loss = SparseCategoricalCrossentropy()
+    model.compile(optimizer=optimizer, loss='categorical_crossentropy',
                   metrics=['accuracy'])
     model.summary()
     # Traning
