@@ -93,16 +93,21 @@ def residual_group_bottleneck_Xt(inputs, num_filters, n_blocks, cardinality, con
     return out
 
 def model50(inputs, num_filters):
-    # build model resnet50
-    x = residual_group_bottleneck(inputs, num_filters, 3)  # First Residual Block Group of 64 filters
-    x = residual_group_bottleneck(x, num_filters * 2, 3)   # Second Residual Block Group of 128 filters
-    x = residual_group_bottleneck(x, num_filters * 4, 5)    # Third Residual Block Group of 256 filters
-    out = residual_group_bottleneck(x, num_filters * 8, 2, False)  # Fourth Residual Block Group of 512 filters
+    # build model resnet50 :
+    # First Residual Block Group of 64 filters
+    # Second Residual Block Group of 128 filters
+    # Third Residual Block Group of 256 filters
+    # Fourth Residual Block Group of 512 filters
+    x = residual_group_bottleneck(inputs, num_filters, 3)  
+    x = residual_group_bottleneck(x, num_filters * 2, 3)   
+    x = residual_group_bottleneck(x, num_filters * 4, 5)    
+    out = residual_group_bottleneck(x, num_filters * 8, 2, False)  
 
     return out
 
 def modelXt50(inputs, num_filters, cardinality):
     # build model resnet50Xt
+    # 4 nhóm tuong tự modelresnet50
     x = residual_group_bottleneck(inputs, num_filters, 3, cardinality)  # First Residual Block Group of 64 filters
     x = residual_group_bottleneck(x, num_filters * 2, 3, cardinality) # Second Residual Block Group of 128 filters
     x = residual_group_bottleneck(x, num_filters * 4, 5, cardinality)  # Third Residual Block Group of 256 filters
