@@ -129,13 +129,13 @@ if __name__ == "__main__":
     loss = SparseCategoricalCrossentropy()
     model.compile(optimizer=optimizer, loss=loss,
                   metrics=['accuracy'])
-    # model.summary()
+    model.summary()
     # Traning
     
-    # model.fit(train_ds_cmu,
-    #           epochs=epoch,
-    #           validation_data=val_ds)
+    model.fit(train_ds_cmu,
+              epochs=epoch,
+              validation_data=val_ds)
 
-    # # Save model
-    # model.save(args.model_folder)
+    # Save model
+    model.save(args.model_folder)
 
