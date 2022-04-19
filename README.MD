@@ -13,6 +13,14 @@ Trong những năm qua, Transformer đã thường xuyên vượt qua CV. Lần 
 
 - Bản tóm tắt ý chính của paper: [ConvNeXt 2020s sơ lược ](https://docs.google.com/document/d/1IoyAoVkJoccDNPd1csJ1SD3LWshVJb_sB1A3_ylDZf8/edit?usp=sharing)
 
+
+Sơ đồ mô hình mạng ConvNeXt 2020s: 
+
+<p align="center">
+    <img src='/media/quynh/01D4F60B2E950BE0/Documents/Workspace/AI/Project own/ConvNeXt-2020s-Tensorflow/data/test/convnext.png' width=640 height = 820 class="center">
+</p>
+
+
 - Các paper liên quan cần đọc để hỗ trợ đọc hiểu paper trên : 
     - [ResNet-Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
     - [MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications](https://arxiv.org/abs/1704.04861)
