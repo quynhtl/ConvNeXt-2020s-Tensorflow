@@ -159,7 +159,7 @@ class ResNet:
         inputs = tf.keras.Input((self.length, self.width, self.num_channel))  # The input tensor
         stem_b = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
         x = model50(stem_b, self.num_filters)  # The learner
-        outputs = MLP(x,self.pooling,self.dropout_rate,output_nums,problem_type)
+        outputs = MLP(x,self.pooling,self.dropout_rate,self.output_nums,self.problem_type)
         # Khởi tạo Model
         model = tf.keras.Model(inputs, outputs)
 
@@ -183,21 +183,21 @@ class ResNeXt:
         inputs = tf.keras.Input((self.length, self.width, self.num_channel))  # The input tensor
         stem_b = stem_bottleneck(inputs, self.num_filters)  # The Stem Convolution Group
         x = modelXt50(stem_b, self.num_filters, self.cardinality)  # The learner
-        outputs = MLP(x, self.pooling,self.dropout_rate,output_nums,problem_type)
+        outputs = MLP(x, self.pooling,self.dropout_rate,self.output_nums,self.problem_type)
         # Instantiate the Model
         model = tf.keras.Model(inputs, outputs)
 
         return model
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
 
-#     length = 224
-#     width = 224
-#     model_name = 'ResNetXt' 
-#     model_width = 16  
-#     num_channel = 1  
-#     problem_type = 'Classification' 
-#     output_nums = 100  
-#     #Model = ResNeXt(length, width, num_channel, model_width, cardinality=8, problem_type=problem_type, output_nums=output_nums, pooling='avg', dropout_rate=False).ResNeXt50()
-#     Model = ResNet(length, width, num_channel, model_width, problem_type=problem_type, output_nums=output_nums, pooling='avg', dropout_rate=False).ResNet50()
-#     Model.summary()
+    length = 224
+    width = 224
+    model_name = 'ResNetXt' 
+    model_width = 16  
+    num_channel = 1  
+    problem_type = 'Classification' 
+    output_nums = 100  
+    #Model = ResNeXt(length, width, num_channel, model_width, cardinality=8, problem_type=problem_type, output_nums=output_nums, pooling='avg', dropout_rate=False).ResNeXt50()
+    Model = ResNet(length, width, num_channel, model_width, problem_type=problem_type, output_nums=output_nums, pooling='avg', dropout_rate=False).ResNet50()
+    Model.summary()
