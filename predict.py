@@ -12,17 +12,18 @@ if __name__ == "__main__":
     parser.add_argument("--test-file-path", default='{}/data/test'.format(home_dir), type=str, required=True)
     parser.add_argument("--model-folder", default='{}/model/'.format(home_dir), type=str)
     parser.add_argument("--image-size", default=224, type=int)
+    parser.add_argument("--image-channels", default=3, type=int)
     # FIXME
     args = parser.parse_args()
 
     # FIXME
     # Project Description
 
-    print('---------------------Welcome to ${name}-------------------')
+    print('---------------------Welcome to ConvNeXt 2020s-------------------')
     print('Github: ${accout}')
     print('Email: ${email}')
     print('---------------------------------------------------------------------')
-    print('Training ${name} model with hyper-params:') # FIXME
+    print('Training ConvNeXt 2020s model with hyper-params:') 
     print('===========================')
 
     # FIXME
@@ -36,6 +37,7 @@ if __name__ == "__main__":
     x = tf.image.resize(
         input_arr, [args.image_size, args.image_size]
     )
+    x = x / 255
     predictions = convnext.predict(x)   
     print('---------------------Prediction Result: -------------------')
     print('Output Softmax: {}'.format(predictions))
