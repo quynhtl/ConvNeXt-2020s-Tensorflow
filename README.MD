@@ -9,7 +9,7 @@ Trong những năm qua, Transformer đã thường xuyên vượt qua CV. Lần 
 
 - Paper gốc : [A ConvNet for the 2020s](https://arxiv.org/abs/2201.03545)
 
-- Translate VietNamese by me: [A ConvNet for the 2020stranslate ](https://docs.google.com/document/d/10nPGRRUDybxll96e17RcDjnPkpTe2LfHWDWu7EWvpSQ/edit?usp=sharing)
+- Translate VietNamese by me: [A ConvNet for the 2020s translate ](https://docs.google.com/document/d/10nPGRRUDybxll96e17RcDjnPkpTe2LfHWDWu7EWvpSQ/edit?usp=sharing)
 
 - Bản tóm tắt ý chính của paper: [ConvNeXt 2020s sơ lược ](https://docs.google.com/document/d/1IoyAoVkJoccDNPd1csJ1SD3LWshVJb_sB1A3_ylDZf8/edit?usp=sharing)
 
@@ -22,7 +22,7 @@ Sơ đồ mô hình mạng ConvNeXt 2020s:
 
 Review training on colab:
 
-<a href="https://colab.research.google.com/drive/1f0w9hqypkrU12ggkD7q8EZMkfDAzEakj#scrollTo=oFrHbd-sR8Rv"><img src="https://storage.googleapis.com/protonx-cloud-storage/colab_favicon_256px.png" width=80> </a>
+<a href="https://colab.research.google.com/drive/1f0w9hqypkrU12ggkD7q8EZMkfDAzEakj#scrollTo=oFrHbd-sR8Rv"><img src="https://storage.googleapis.com/protonx-cloud-storage/colab_favicon_256px.png" width=80>[Public] Testing_library ConvNeXt-2020s.ipynb </a>
 
 
 - Các paper liên quan cần đọc để hỗ trợ đọc hiểu paper trên : 
