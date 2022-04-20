@@ -17,8 +17,8 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     
     # Arguments users used when running command lines
-    parser.add_argument('--model', default='resnext', type=str,
-                        help='Type of ConvNeXt model, valid option: resnet50, resnext')
+    parser.add_argument('--model', default='resnet50', type=str,
+                        help='Type of ConvNeXt model, valid option: resnet50, resnetxt')
     parser.add_argument('--optimizer', default="AdamW", type=str,
                         help='Type of optimizer, valid option: AdamW')
     parser.add_argument('--lr', default=0.001,
@@ -81,8 +81,8 @@ if __name__ == "__main__":
     #Build model
     if args.model == 'resnet50':
         model = ResNet(image_size, image_size, image_channels, num_filters, problem_type=problem_type, output_nums=args.num_classes, pooling='avg', dropout_rate=False).ResNet50()
-    elif args.model == 'resnext':
-        model = ResNeXt(image_size, image_size, image_channels, num_filters,cardinality=32, problem_type=problem_type, output_nums=args.num_classes, pooling='avg', dropout_rate=False).ResNetXt50()
+    elif args.model == 'resnetxt':
+        model = ResNeXt(image_size, image_size, image_channels, num_filters, cardinality=32, problem_type=problem_type, output_nums=args.num_classes, pooling='avg', dropout_rate=False).ResNeXt50()
     else:
         model = convnext(
             input_shape=[image_size,image_size,image_channels],
