@@ -1,27 +1,26 @@
 from model.convNeXt_2020s import convnext
 from model.resnet50_resnet50Xt import ResNeXt, ResNet
 from data import  load_dataset_original, load_dataset_cifar10
-from tensorflow.keras.losses import SparseCategoricalCrossentropy
 import tensorflow as tf
 from argparse import ArgumentParser
-from tensorflow.keras.optimizers import Adam
 # conda deactivate (trong TH đang ở môi trg khác dùng lệnh này để thoát khỏi enviroment đó r mới cài thư viện dưới nhé)
 # pip install tensorflow-addons
 import tensorflow_addons as tfa
 import os
 from optimizer_adamW import WeightDecayScheduler, lr_schedule, wd_schedule
 from tensorflow.python.data import Dataset
-from keras_preprocessing.image import ImageDataGenerator
-
+from tensorflow.keras.callbacks import ReduceLROnPlateau, ModelCheckpoint
+from tensorflow.keras.callbacks import Callback
 
 
 if __name__ == "__main__":
-    os.environ["CUDA_VISIBLE_DEVICES"] = '1'
     parser = ArgumentParser()
     
     # Arguments users used when running command lines
     parser.add_argument('--model', default='resnet50', type=str,
                         help='Type of ConvNeXt model, valid option: resnet50, resnext')
+    parser.add_argument('--optimizer', default="AdamW", type=str,
+                        help='Type of optimizer, valid option: AdamW')
     parser.add_argument('--lr', default=0.001,
                         type=float, help='Learning rate')
     parser.add_argument("--batch-size", default=64, type=int)
@@ -57,6 +56,7 @@ if __name__ == "__main__":
     print('===========================')
 
     # Assign arguments to variables to avoid repetition 
+    optimizer = args.optimizer
     train_folder = args.train_folder
     valid_folder = args.valid_folder
     batch_size =  args.batch_size
@@ -73,29 +73,13 @@ if __name__ == "__main__":
     # Data loader
     if args.train_folder != '' and args.valid_folder != '':
         # Load train images from folder
-        train_datagen,val_datagen =  load_dataset_original()
+        train_datagen,val_datagen =  load_dataset_original(args.train_folder,args.valid_folder,args.image_size,args.batch_size)
             #Load train set
-        train_ds_cmu = train_datagen.flow_from_directory(
-            train_folder,
-            target_size=(args.image_size, args.image_size),
-            batch_size=args.batch_size,
-            class_mode='categorical',
-            shuffle=True,
-            seed=123,
-        )
-        #Load test set
-        val_ds = val_datagen.flow_from_directory(
-            valid_folder,
-            target_size=(args.image_size, args.image_size),
-            batch_size=args.batch_size,
-            class_mode='categorical',
-            shuffle=True,
-            seed=123,
-        )
+        
 
     else:
         print("Data folder is not set. Use CIFAR 10 dataset")
-        train_ds_cmu, train_ds_simple, val_ds = load_dataset_cifar10(batch_size)
+        train_ds_cmu, train_ds_simple, val_ds = load_dataset_cifar10(args.batch_size,args.image_size)
 
 
     if args.model == 'resnet50':
@@ -108,26 +92,40 @@ if __name__ == "__main__":
             classes = args.num_classes,
         )
 
-    optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
-    # optimizer =  tfa.optimizers.AdamW(learning_rate=lr_schedule(0), weight_decay=wd_schedule(0))
-    
-    # tb_callback = tf.keras.callbacks.TensorBoard(os.path.join('logs', 'adamw'),
-    #                                              profile_batch=0)
-    # lr_callback = tf.keras.callbacks.LearningRateScheduler(lr_schedule)
-    
-    # wd_callback = WeightDecayScheduler(wd_schedule)
-
-
-    # loss = SparseCategoricalCrossentropy()
-    model.compile(optimizer=optimizer, loss='categorical_crossentropy',
-                  metrics=['accuracy'])
     model.summary()
     # Traning
-    
-    model.fit(train_ds_cmu,
-              epochs=epoch,
-              validation_data=val_ds)
+    if optimizer == "AdamW":
+        optimizer =  tfa.optimizers.AdamW(learning_rate=lr_schedule(0), weight_decay=wd_schedule(0))
+        
+        lr_callback = tf.keras.callbacks.LearningRateScheduler(lr_schedule)
+        
+        wd_callback = WeightDecayScheduler(wd_schedule)
+        model.compile(optimizer=optimizer, loss='categorical_crossentropy',
+                  metrics=['accuracy'])
+        model.fit(train_ds_cmu, validation_data=val_ds, epochs=40,
+                                      callbacks=[lr_callback, wd_callback])
+        #Save model
+        model.save(args.model_folder)
+    else: 
+        optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
+        learning_rate_reduction = ReduceLROnPlateau(monitor='val_accuracy', 
+                                            patience=5, 
+                                            verbose=1, 
+                                            factor=0.5, 
+                                            min_lr=0.00001)
+        checkpoint = ModelCheckpoint(filepath=args.model_folder + 'model.h5', monitor='val_accuracy', mode='max', save_best_only=True, save_weights_only=False, verbose=1)
+        callbacks = [learning_rate_reduction, checkpoint] 
+        model.compile(optimizer=optimizer, loss='categorical_crossentropy',
+                  metrics=['accuracy'])
+        model.fit(train_ds_cmu,
+                    epochs=epoch,
+                    validation_data=val_ds)
 
-    # Save model
-    model.save(args.model_folder)
+    
+    
+    
+    
+    
+
+    
 

@@ -39,6 +39,7 @@ def wd_schedule(epoch):
         wd *= 1e-1
     print('Weight decay: ', wd)
     return wd
+    
 @keras_export('keras.callbacks.WeightDecayScheduler')
 class WeightDecayScheduler(Callback):
     """Weight Decay Scheduler.

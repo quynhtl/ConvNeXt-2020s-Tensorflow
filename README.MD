@@ -17,7 +17,7 @@ Trong những năm qua, Transformer đã thường xuyên vượt qua CV. Lần 
 Sơ đồ mô hình mạng ConvNeXt 2020s: 
 
 <p align="center">
-    <img src='./data/test/c4.png' width=960 height = 540 class="center">
+<img src='./data/test/c4.png' width=960 height = 540 class="center">
 </p>
 
 Review training on colab:
