@@ -39,10 +39,10 @@ Authors:
 - Github: https://github.com/quynhtl
 - Email: tranlequynh.uet@gmail.com
 
-Advisors:
+<!-- Advisors:
 
 - Github: https://github.com/bangoc123
-- Email: protonxai@gmail.com
+- Email: protonxai@gmail.com -->
 <!-- Description about your project. Why do you choose to build this?  <--- **FIXME**
 
 Slide about your project (if it's available) <--- **FIXME**
