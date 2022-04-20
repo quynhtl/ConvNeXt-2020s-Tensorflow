@@ -92,6 +92,7 @@ if __name__ == "__main__":
     model.summary()
 
     # Traning
+
     if optimizer == "AdamW":
         optimizer =  tfa.optimizers.AdamW(learning_rate=lr_schedule(0), weight_decay=wd_schedule(0))
         
@@ -100,10 +101,12 @@ if __name__ == "__main__":
         wd_callback = WeightDecayScheduler(wd_schedule)
         model.compile(optimizer=optimizer, loss='categorical_crossentropy',
                   metrics=['accuracy'])
-        model.fit(train_ds_cmu, validation_data=val_ds, epochs=epoch,
-                                      callbacks=[lr_callback, wd_callback])
-        #Save model
+        model.fit(train_ds_cmu, 
+                    validation_data=val_ds, 
+                    epochs=epoch,
+                    callbacks=[lr_callback, wd_callback])
         model.save(args.model_folder)
+
     else: 
         optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
         learning_rate_reduction = ReduceLROnPlateau(monitor='val_accuracy', 
