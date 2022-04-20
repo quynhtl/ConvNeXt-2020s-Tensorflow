@@ -74,14 +74,11 @@ if __name__ == "__main__":
     if args.train_folder != '' and args.valid_folder != '':
         # Load train images from folder
         train_datagen,val_datagen =  load_dataset_original(args.train_folder,args.valid_folder,args.image_size,args.batch_size)
-            #Load train set
-        
-
     else:
         print("Data folder is not set. Use CIFAR 10 dataset")
         train_ds_cmu, train_ds_simple, val_ds = load_dataset_cifar10(args.batch_size,args.image_size)
 
-
+    #Build model
     if args.model == 'resnet50':
         model = ResNet(image_size, image_size, image_channels, num_filters, problem_type=problem_type, output_nums=args.num_classes, pooling='avg', dropout_rate=False).ResNet50()
     elif args.model == 'resnext':
@@ -93,6 +90,7 @@ if __name__ == "__main__":
         )
 
     model.summary()
+
     # Traning
     if optimizer == "AdamW":
         optimizer =  tfa.optimizers.AdamW(learning_rate=lr_schedule(0), weight_decay=wd_schedule(0))
