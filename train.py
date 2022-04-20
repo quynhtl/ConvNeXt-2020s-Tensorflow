@@ -100,7 +100,7 @@ if __name__ == "__main__":
         wd_callback = WeightDecayScheduler(wd_schedule)
         model.compile(optimizer=optimizer, loss='categorical_crossentropy',
                   metrics=['accuracy'])
-        model.fit(train_ds_cmu, validation_data=val_ds, epochs=40,
+        model.fit(train_ds_cmu, validation_data=val_ds, epochs=epoch,
                                       callbacks=[lr_callback, wd_callback])
         #Save model
         model.save(args.model_folder)
@@ -117,6 +117,7 @@ if __name__ == "__main__":
                   metrics=['accuracy'])
         model.fit(train_ds_cmu,
                     epochs=epoch,
+                    callbacks=callbacks,
                     validation_data=val_ds)
 
     
