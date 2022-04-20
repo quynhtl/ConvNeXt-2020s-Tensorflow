@@ -108,10 +108,10 @@ def model50(inputs, num_filters):
 def modelXt50(inputs, num_filters, cardinality):
     # build model resnet50Xt
     # 4 nhóm tuong tự modelresnet50
-    x = residual_group_bottleneck(inputs, num_filters, 3, cardinality)  
-    x = residual_group_bottleneck(x, num_filters * 2, 3, cardinality) 
-    x = residual_group_bottleneck(x, num_filters * 4, 5, cardinality)  
-    out = residual_group_bottleneck(x, num_filters * 8, 2, cardinality,False)  
+    x = residual_group_bottleneck_Xt(inputs, num_filters, 3, cardinality)  
+    x = residual_group_bottleneck_Xt(x, num_filters * 2, 3, cardinality) 
+    x = residual_group_bottleneck_Xt(x, num_filters * 4, 5, cardinality)  
+    out = residual_group_bottleneck_Xt(x, num_filters * 8, 2, cardinality,False)  
 
     return out
 
@@ -203,6 +203,6 @@ if __name__ == '__main__':
     num_channel = 1  
     problem_type = 'Classification' 
     output_nums = 100  
-    #Model = ResNeXt(length, width, num_channel, model_width, cardinality=8, problem_type=problem_type, output_nums=output_nums, pooling='avg', dropout_rate=False).ResNeXt50()
-    Model = ResNet(length, width, num_channel, model_width, problem_type=problem_type, output_nums=output_nums, pooling='avg', dropout_rate=False).ResNet50()
+    Model = ResNeXt(length, width, num_channel, model_width, cardinality=8, problem_type=problem_type, output_nums=output_nums, pooling='avg', dropout_rate=False).ResNeXt50()
+    #Model = ResNet(length, width, num_channel, model_width, problem_type=problem_type, output_nums=output_nums, pooling='avg', dropout_rate=False).ResNet50()
     Model.summary()

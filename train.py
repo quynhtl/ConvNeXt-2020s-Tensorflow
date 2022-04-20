@@ -17,7 +17,7 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     
     # Arguments users used when running command lines
-    parser.add_argument('--model', default='resnet50', type=str,
+    parser.add_argument('--model', default='resnext', type=str,
                         help='Type of ConvNeXt model, valid option: resnet50, resnext')
     parser.add_argument('--optimizer', default="AdamW", type=str,
                         help='Type of optimizer, valid option: AdamW')
