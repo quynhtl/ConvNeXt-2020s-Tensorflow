@@ -34,15 +34,15 @@ def grouped_conv_block(inputs, num_filters, kernel_size, strides, cardinality):
 
     if cardinality == 1:
         # Khi mà cardinality = 1, chỉ có standard convolution
-        x = Conv_2D_Block(inputs, num_filters, (1, 1), strides=(strides, strides))
-        x = Conv_2D_Block(x, grouped_channels, (kernel_size, kernel_size), (strides, strides))
+        x = Conv_2D_Block(inputs, num_filters, 1, strides=strides)
+        x = Conv_2D_Block(x, grouped_channels, kernel_size, strides)
 
         return x
 
     for c in range(cardinality):
         x = tf.keras.layers.Lambda(lambda z: z[:, :, :, c * grouped_channels:(c + 1) * grouped_channels])(inputs)
-        x = Conv_2D_Block(x, num_filters, (1, 1), strides=(strides, strides))
-        x = Conv_2D_Block(x, grouped_channels, (kernel_size, kernel_size), strides=(strides, strides))
+        x = Conv_2D_Block(x, num_filters, 1, strides=strides)
+        x = Conv_2D_Block(x, grouped_channels, kernel_size, strides)
 
         group_list.append(x)
 
@@ -66,7 +66,7 @@ def residual_block_bottleneck(inputs, num_filters):
 def residual_block_bottleneck_Xt(inputs, num_filters, cardinality):
     # Xây dựng một khối dư của Conv (Residual Block of Convolutions)
     shortcut = Conv_2D_Block(inputs, num_filters * 2, (1, 1), (1, 1))
-    x = grouped_conv_block(inputs, num_filters, 3, 1, cardinality)
+    x = grouped_conv_block(inputs, num_filters,(3,3),(1, 1), cardinality)
     x = Conv_2D_Block(x, num_filters * 2, (1, 1), (1, 1))
     conv = tf.keras.layers.Add()([x, shortcut])
     out = tf.keras.layers.Activation('relu')(conv)
