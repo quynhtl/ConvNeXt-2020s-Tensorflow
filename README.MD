@@ -20,9 +20,9 @@ Sơ đồ mô hình mạng ConvNeXt 2020s:
 <img src='./data/test/c4.png' width=960 height = 540 class="center">
 </p>
 
-Review training on colab:
+Review training on colab - Testing_library ConvNeXt-2020s.ipynb:
 
-<a href="https://colab.research.google.com/drive/1f0w9hqypkrU12ggkD7q8EZMkfDAzEakj#scrollTo=oFrHbd-sR8Rv"><img src="https://storage.googleapis.com/protonx-cloud-storage/colab_favicon_256px.png" width=80>[Public] Testing_library ConvNeXt-2020s.ipynb </a>
+<a href="https://colab.research.google.com/drive/1f0w9hqypkrU12ggkD7q8EZMkfDAzEakj#scrollTo=oFrHbd-sR8Rv"><img src="https://storage.googleapis.com/protonx-cloud-storage/colab_favicon_256px.png" width=80> </a>
 
 
 - Các paper liên quan cần đọc để hỗ trợ đọc hiểu paper trên : 
