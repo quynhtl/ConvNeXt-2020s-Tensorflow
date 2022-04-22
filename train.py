@@ -22,7 +22,7 @@ if __name__ == "__main__":
                         help='Type of optimizer, valid option: AdamW')
     parser.add_argument('--lr', default=0.001,
                         type=float, help='Learning rate')
-    parser.add_argument("--batch-size", default=64, type=int)
+    parser.add_argument("--batch-size", default=128, type=int)
     parser.add_argument("--epochs", default=100, type=int)
     parser.add_argument('--num-classes', default=10,
                         type=int, help='Number of classes')
@@ -69,10 +69,10 @@ if __name__ == "__main__":
     # Data loader
     if args.train_folder != '' and args.valid_folder != '':
         # Load train images from folder
-        train_ds_cmu,val_ds =  load_dataset_original(args.train_folder,args.valid_folder,args.image_size,args.batch_size)
+        train_ds, val_ds =  load_dataset_original(args.train_folder,args.valid_folder,args.image_size)
     else:
         print("Data folder is not set. Use CIFAR 10 dataset")
-        train_ds_cmu, train_ds_simple, val_ds = load_dataset_cifar10(args.image_size,args.batch_size)
+        train_ds, val_ds = load_dataset_cifar10(args.image_size)
 
     #Build model
     if args.model == 'resnet50':
@@ -100,7 +100,7 @@ if __name__ == "__main__":
         loss = tf.keras.losses.SparseCategoricalCrossentropy()
         model.compile(optimizer=optimizer, loss=loss,
                   metrics=['accuracy'])
-        model.fit(train_ds_cmu, 
+        model.fit(train_ds, 
                     validation_data=val_ds, 
                     epochs=epoch,
                     callbacks=[lr_callback, wd_callback])
@@ -118,7 +118,7 @@ if __name__ == "__main__":
         loss = tf.keras.losses.SparseCategoricalCrossentropy()
         model.compile(optimizer=optimizer, loss=loss,
                   metrics=['accuracy'])
-        model.fit(train_ds_cmu,
+        model.fit(train_ds,
                     epochs=epoch,
                     callbacks=callbacks,
                     validation_data=val_ds)

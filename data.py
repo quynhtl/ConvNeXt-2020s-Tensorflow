@@ -7,16 +7,14 @@ np.random.seed(42)
 tf.random.set_seed(42)
 
 AUTO = tf.data.AUTOTUNE
-def load_dataset_cifar10(image_size,BATCH_SIZE):
-
+def load_dataset_cifar10(image_size):
+    BATCH_SIZE = 32
     def preprocess_image(image,label):
         image = tf.image.resize(image, (image_size, image_size))
         image = tf.image.convert_image_dtype(image, tf.float32) / 255.0
         return image, label
 
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
-    x_train = x_train.astype("float32") / 255
-    x_test = x_test.astype("float32") / 255
     train_ds_simple = tf.data.Dataset.from_tensor_slices((x_train, y_train))
 
     val_ds = tf.data.Dataset.from_tensor_slices((x_test, y_test))
@@ -25,9 +23,10 @@ def load_dataset_cifar10(image_size,BATCH_SIZE):
         .batch(BATCH_SIZE)
         .prefetch(AUTO)
     )
-    return train_ds_simple, train_ds_simple, val_ds
+    return train_ds_simple, val_ds
 
-def load_dataset_original(train_folder,valid_folder,image_size,batch_size):
+def load_dataset_original(train_folder,valid_folder,image_size):
+    batch_size = 32
     train_datagen = ImageDataGenerator(rotation_range=15,
                                     rescale=1./255,
                                     shear_range=0.1,
@@ -37,7 +36,7 @@ def load_dataset_original(train_folder,valid_folder,image_size,batch_size):
                                     height_shift_range=0.1)
     
     val_datagen = ImageDataGenerator(rescale=1./255)
-    train_ds_cmu = train_datagen.flow_from_directory(
+    train_ds = train_datagen.flow_from_directory(
             train_folder,
             target_size=(image_size, image_size),
             batch_size= batch_size,
@@ -55,5 +54,5 @@ def load_dataset_original(train_folder,valid_folder,image_size,batch_size):
             seed=123,
         )
     
-    return train_ds_cmu,val_ds #train_datagen, val_datagen
+    return train_ds,val_ds #train_datagen, val_datagen
 
