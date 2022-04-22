@@ -1,5 +1,7 @@
 from model.convNeXt_2020s import convnext
-from model.resnet50_resnet50Xt import ResNeXt, ResNet
+
+from model.resnet import ResNet
+from model.resnet50Xt import ResNext50 
 from data import  load_dataset_original, load_dataset_cifar10
 import tensorflow as tf
 from argparse import ArgumentParser
@@ -17,7 +19,7 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     
     # Arguments users used when running command lines
-    parser.add_argument('--model', default='resnetxt', type=str,
+    parser.add_argument('--model', default='resnet50', type=str,
                         help='Type of ConvNeXt model, valid option: resnet50, resnetxt')
     parser.add_argument('--optimizer', default="AdamW", type=str,
                         help='Type of optimizer, valid option: AdamW')
@@ -80,9 +82,11 @@ if __name__ == "__main__":
 
     #Build model
     if args.model == 'resnet50':
-        model = ResNet(image_size, image_size, image_channels, num_filters, problem_type=problem_type, output_nums=args.num_classes, pooling='avg', dropout_rate=False).ResNet50()
+        model = ResNet([3, 4, 6, 3], name='ResNet50')
+        model.build(input_shape=(None, 224, 224, 3))
     elif args.model == 'resnetxt':
-        model = ResNeXt(image_size, image_size, image_channels, num_filters, cardinality=32, problem_type=problem_type, output_nums=args.num_classes, pooling='avg', dropout_rate=False).ResNeXt50()
+        model = ResNext50()
+        model.build(input_shape=(None, 224, 224, 3))
     else:
         model = convnext(
             input_shape=[image_size,image_size,image_channels],
@@ -99,7 +103,7 @@ if __name__ == "__main__":
         lr_callback = tf.keras.callbacks.LearningRateScheduler(lr_schedule)
         
         wd_callback = WeightDecayScheduler(wd_schedule)
-        model.compile(optimizer=optimizer, loss='categorical_crossentropy',
+        model.compile(optimizer=optimizer, loss='SparseCategoricalCrossentropy',
                   metrics=['accuracy'])
         model.fit(train_ds_cmu, 
                     validation_data=val_ds, 
@@ -116,7 +120,7 @@ if __name__ == "__main__":
                                             min_lr=0.00001)
         checkpoint = ModelCheckpoint(filepath=args.model_folder + 'model.h5', monitor='val_accuracy', mode='max', save_best_only=True, save_weights_only=False, verbose=1)
         callbacks = [learning_rate_reduction, checkpoint] 
-        model.compile(optimizer=optimizer, loss='categorical_crossentropy',
+        model.compile(optimizer=optimizer, loss='SparseCategoricalCrossentropy',
                   metrics=['accuracy'])
         model.fit(train_ds_cmu,
                     epochs=epoch,
