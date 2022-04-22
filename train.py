@@ -97,7 +97,8 @@ if __name__ == "__main__":
         lr_callback = tf.keras.callbacks.LearningRateScheduler(lr_schedule)
         
         wd_callback = WeightDecayScheduler(wd_schedule)
-        model.compile(optimizer=optimizer, loss='SparseCategoricalCrossentropy',
+        loss = tf.keras.losses.SparseCategoricalCrossentropy()
+        model.compile(optimizer=optimizer, loss=loss,
                   metrics=['accuracy'])
         model.fit(train_ds_cmu, 
                     validation_data=val_ds, 
@@ -114,7 +115,8 @@ if __name__ == "__main__":
                                             min_lr=0.00001)
         checkpoint = ModelCheckpoint(filepath=args.model_folder + 'model.h5', monitor='val_accuracy', mode='max', save_best_only=True, save_weights_only=False, verbose=1)
         callbacks = [learning_rate_reduction, checkpoint] 
-        model.compile(optimizer=optimizer, loss='SparseCategoricalCrossentropy',
+        loss = tf.keras.losses.SparseCategoricalCrossentropy()
+        model.compile(optimizer=optimizer, loss=loss,
                   metrics=['accuracy'])
         model.fit(train_ds_cmu,
                     epochs=epoch,
