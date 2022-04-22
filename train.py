@@ -17,7 +17,7 @@ if __name__ == "__main__":
     
     # Arguments users used when running command lines
     parser.add_argument('--model', default='resnet50', type=str,
-                        help='Type of ConvNeXt model, valid option: resnet50, resnetxt')
+                        help='Type of ConvNeXt model, valid option: convnext resnetxt')
     parser.add_argument('--optimizer', default="AdamW", type=str,
                         help='Type of optimizer, valid option: AdamW')
     parser.add_argument('--lr', default=0.001,
@@ -37,11 +37,9 @@ if __name__ == "__main__":
     parser.add_argument('--valid-folder', default='', type=str,
                         help='Where validation data is located')
     parser.add_argument('--class-mode', default='categorical', type=str, help='Class mode to compile')
-    parser.add_argument('--problem-type', default='Classification', type=str)
     parser.add_argument('--model-folder', default='output/',
                         type=str, help='Folder to save trained model')  
-    parser.add_argument('--cardinality', default=32,
-                        type=int, help='cardinality')
+
     args = parser.parse_args()
 
     # Project Description
@@ -66,8 +64,7 @@ if __name__ == "__main__":
     class_mode = args.class_mode
     lr = args.lr
     num_filters = args.num_filters
-    problem_type = args.problem_type
-    cardinality= args.cardinality
+
     AUTO = tf.data.AUTOTUNE
     # Data loader
     if args.train_folder != '' and args.valid_folder != '':
@@ -102,11 +99,11 @@ if __name__ == "__main__":
         wd_callback = WeightDecayScheduler(wd_schedule)
         model.compile(optimizer=optimizer, loss='SparseCategoricalCrossentropy',
                   metrics=['accuracy'])
-        # model.fit(train_ds_cmu, 
-        #             validation_data=val_ds, 
-        #             epochs=epoch,
-        #             callbacks=[lr_callback, wd_callback])
-        # model.save(args.model_folder)
+        model.fit(train_ds_cmu, 
+                    validation_data=val_ds, 
+                    epochs=epoch,
+                    callbacks=[lr_callback, wd_callback])
+        model.save(args.model_folder)
 
     else: 
         optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
@@ -119,10 +116,10 @@ if __name__ == "__main__":
         callbacks = [learning_rate_reduction, checkpoint] 
         model.compile(optimizer=optimizer, loss='SparseCategoricalCrossentropy',
                   metrics=['accuracy'])
-        # model.fit(train_ds_cmu,
-        #             epochs=epoch,
-        #             callbacks=callbacks,
-        #             validation_data=val_ds)
+        model.fit(train_ds_cmu,
+                    epochs=epoch,
+                    callbacks=callbacks,
+                    validation_data=val_ds)
 
     
     
