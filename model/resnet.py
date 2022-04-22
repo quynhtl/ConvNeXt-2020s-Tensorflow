@@ -183,9 +183,6 @@ def ResNet(type_of_net, name=None, n_classes=2):
 
 
 if __name__ == '__main__':
-
-
-    
     model = ResNet([3, 4, 6, 3], name='ResNet50')
     model.build(input_shape=(None, 224, 224, 3))
     model.summary()

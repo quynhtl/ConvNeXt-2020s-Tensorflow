@@ -75,7 +75,7 @@ if __name__ == "__main__":
         train_ds_cmu,val_ds =  load_dataset_original(args.train_folder,args.valid_folder,args.image_size,args.batch_size)
     else:
         print("Data folder is not set. Use CIFAR 10 dataset")
-        train_ds_cmu, train_ds_simple, val_ds = load_dataset_cifar10(args.batch_size,args.image_size)
+        train_ds_cmu, train_ds_simple, val_ds = load_dataset_cifar10(args.image_size,args.batch_size)
 
     #Build model
     if args.model == 'resnet50':

@@ -166,9 +166,6 @@ def ResNext101():
 
 
 if __name__ == '__main__':
-
-
-    
     model = ResNext50()
     model.build(input_shape=(None, 224, 224, 3))
     model.summary()
