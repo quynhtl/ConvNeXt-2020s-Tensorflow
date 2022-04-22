@@ -44,7 +44,6 @@ def load_dataset_original(train_folder,valid_folder,image_size):
             shuffle=True,
             seed=123,
         )
-        #Load test set
     val_ds = val_datagen.flow_from_directory(
             valid_folder,
             target_size=(image_size, image_size),
@@ -54,5 +53,5 @@ def load_dataset_original(train_folder,valid_folder,image_size):
             seed=123,
         )
     
-    return train_ds,val_ds #train_datagen, val_datagen
+    return train_ds,val_ds 
 

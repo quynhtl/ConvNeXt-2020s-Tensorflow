@@ -103,7 +103,8 @@ if __name__ == "__main__":
         model.fit(train_ds, 
                     validation_data=val_ds, 
                     epochs=epoch,
-                    callbacks=[lr_callback, wd_callback])
+                    callbacks=[lr_callback, wd_callback],
+                    verbose=1)
         model.save(args.model_folder)
 
     else: 
@@ -121,7 +122,8 @@ if __name__ == "__main__":
         model.fit(train_ds,
                     epochs=epoch,
                     callbacks=callbacks,
-                    validation_data=val_ds)
+                    validation_data=val_ds,
+                    verbose=1)
 
     
     
