@@ -1,5 +1,4 @@
 from model.convNeXt_2020s import convnext
-
 from model.resnet import ResNet
 from model.resnet50Xt import ResNext50 
 from data import  load_dataset_original, load_dataset_cifar10
@@ -8,9 +7,7 @@ from argparse import ArgumentParser
 # conda deactivate (trong TH đang ở môi trg khác dùng lệnh này để thoát khỏi enviroment đó r mới cài thư viện dưới nhé)
 # pip install tensorflow-addons
 import tensorflow_addons as tfa
-import os
 from optimizer_adamW import WeightDecayScheduler, lr_schedule, wd_schedule
-from tensorflow.python.data import Dataset
 from tensorflow.keras.callbacks import ReduceLROnPlateau, ModelCheckpoint
 from tensorflow.keras.callbacks import Callback
 

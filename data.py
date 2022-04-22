@@ -17,8 +17,8 @@ def sample_beta_distribution(size, concentration_0=0.2, concentration_1=0.2):
 
 def load_dataset_cifar10(batch_size,image_size):
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
-    y_train = tf.keras.utils.to_categorical(y_train, num_classes=10)
-    y_test = tf.keras.utils.to_categorical(y_test, num_classes=10)
+    # y_train = tf.keras.utils.to_categorical(y_train, num_classes=10)
+    # y_test = tf.keras.utils.to_categorical(y_test, num_classes=10)
 
     def preprocess_image(image,label):
         image = tf.image.resize(image, (image_size, image_size))
@@ -160,6 +160,7 @@ def load_dataset_original(train_folder,valid_folder,image_size,batch_size):
             shuffle=True,
             seed=123,
         )
-
+    train_ds_cmu = train_ds_cmu.astype("float32") 
+    val_ds = val_ds.astype("float32") 
     return train_ds_cmu,val_ds #train_datagen, val_datagen
 
