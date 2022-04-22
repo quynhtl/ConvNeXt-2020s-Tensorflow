@@ -160,7 +160,6 @@ def load_dataset_original(train_folder,valid_folder,image_size,batch_size):
             shuffle=True,
             seed=123,
         )
-    train_ds_cmu = train_ds_cmu.astype("float32") 
-    val_ds = val_ds.astype("float32") 
+    
     return train_ds_cmu,val_ds #train_datagen, val_datagen
 
