@@ -165,11 +165,12 @@ def ResNext101():
                    cardinality=32)
 
 
-resnext50 = ResNext50()
-# resnext101 = ResNext101()
-model = ResNext50()
-model.build(input_shape=(None, 224, 224, 3))
-# model.call(layers.Input(shape=(224, 224, 3)))
-model.summary()
+if __name__ == '__main__':
+
+
+    
+    model = ResNext50()
+    model.build(input_shape=(None, 224, 224, 3))
+    model.summary()
 
 

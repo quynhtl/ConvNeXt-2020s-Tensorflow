@@ -182,18 +182,18 @@ def ResNet(type_of_net, name=None, n_classes=2):
 # resnet50.summary()
 
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
 
 
     
-#     model = ResNet([3, 4, 6, 3], name='ResNet50')
-#     model.build(input_shape=(None, 224, 224, 3))
-#     model.summary()
-#     train_ds_cmu,val_ds = load_dataset_original(train_folder,valid_folder,length,64)
-#     optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+    model = ResNet([3, 4, 6, 3], name='ResNet50')
+    model.build(input_shape=(None, 224, 224, 3))
+    model.summary()
+    # train_ds_cmu,val_ds = load_dataset_original(train_folder,valid_folder,length,64)
+    # optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
-#     model.compile(optimizer=optimizer, loss='categorical_crossentropy',
-#                metrics=['accuracy'])
-#     model.fit(train_ds_cmu,
-#                 epochs=20,
-#                 validation_data=val_ds)
+    # model.compile(optimizer=optimizer, loss='categorical_crossentropy',
+    #            metrics=['accuracy'])
+    # model.fit(train_ds_cmu,
+    #             epochs=20,
+    #             validation_data=val_ds)

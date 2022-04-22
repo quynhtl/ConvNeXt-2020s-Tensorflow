@@ -102,11 +102,11 @@ if __name__ == "__main__":
         wd_callback = WeightDecayScheduler(wd_schedule)
         model.compile(optimizer=optimizer, loss='SparseCategoricalCrossentropy',
                   metrics=['accuracy'])
-        model.fit(train_ds_cmu, 
-                    validation_data=val_ds, 
-                    epochs=epoch,
-                    callbacks=[lr_callback, wd_callback])
-        model.save(args.model_folder)
+        # model.fit(train_ds_cmu, 
+        #             validation_data=val_ds, 
+        #             epochs=epoch,
+        #             callbacks=[lr_callback, wd_callback])
+        # model.save(args.model_folder)
 
     else: 
         optimizer = tf.keras.optimizers.Adam(learning_rate=lr)
@@ -119,10 +119,10 @@ if __name__ == "__main__":
         callbacks = [learning_rate_reduction, checkpoint] 
         model.compile(optimizer=optimizer, loss='SparseCategoricalCrossentropy',
                   metrics=['accuracy'])
-        model.fit(train_ds_cmu,
-                    epochs=epoch,
-                    callbacks=callbacks,
-                    validation_data=val_ds)
+        # model.fit(train_ds_cmu,
+        #             epochs=epoch,
+        #             callbacks=callbacks,
+        #             validation_data=val_ds)
 
     
     
