@@ -39,15 +39,16 @@ def Conv_block(inputs, dropout_rate=0.2, layer_scale_init_value=1e-6):
     x = layers.Conv2D(filters=dim, kernel_size=(1,1), strides=1, padding='same')(x)
     
     # Tạo gama vectơ có thể học được, hàm này được sử dụng để thêm các biến trọng số vào một lớp, lớp khởi tạo các lớp.
-    gama = layers.Layer().add_weight(shape=[dim],  # Số lượng vectơ giống như số kênh bản đồ tính năng đầu ra
+    gama = layers.Layer().add_weight(shape=[dim],  
                                    initializer=tf.initializers.Constant(layer_scale_init_value),  
-                                   dtype=tf.float32,  # chỉ định kiểu dữ liệu
-                                   trainable=True)  # Các thông số có thể huấn luyện, trọng lượng có thể được điều chỉnh bằng cách nhân giống ngược
+                                   dtype=tf.float32,  
+                                   trainable=True)  
 
     # tỷ lệ lớp chia tỷ lệ từng dữ liệu kênh của bản đồ đối tượng và tỷ lệ chia tỷ lệ là gama
-    x = x * gama  # [56,56,96]*[96]==>[56,56,96]
+    # [56,56,96]*[96]==>[56,56,96]
+    x = x * gama  
 
-    # Lớp bỏ học giết chết các tế bào thần kinh một cách ngẫu nhiên
+
     x = layers.Dropout(rate=dropout_rate)(x)
 
     # Phần dư kết nối đầu vào và đầu ra
@@ -60,9 +61,9 @@ def downsampling(inputs, out_channel):
 
     x = layers.LayerNormalization()(inputs)
     
-    x = layers.Conv2D(filters=out_channel,  # Số kênh đầu ra
+    x = layers.Conv2D(filters=out_channel,  
                       kernel_size=(2,2),
-                      strides=2,  # lấy mẫu xuống
+                      strides=2,  
                       padding='same')(x)
     
     return x
@@ -84,7 +85,7 @@ def stage(x, num, out_channel, downsampe=True):
     return x
 
 #（5）mạng đường trục
-def convnext(input_shape, classes):  # Hình dạng hình ảnh đầu vào và số loại phân loại
+def convnext(input_shape, classes):  
 
     # Xây dựng lớp đầu vào
     inputs = keras.Input(shape=input_shape)
