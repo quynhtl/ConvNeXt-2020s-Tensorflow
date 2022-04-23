@@ -7,8 +7,7 @@ np.random.seed(42)
 tf.random.set_seed(42)
 
 AUTO = tf.data.AUTOTUNE
-def load_dataset_cifar10(image_size):
-    BATCH_SIZE = 32
+def load_dataset_cifar10(image_size,batch_size):
     def preprocess_image(image,label):
         image = tf.image.resize(image, (image_size, image_size))
         image = tf.image.convert_image_dtype(image, tf.float32) / 255.0
@@ -22,13 +21,12 @@ def load_dataset_cifar10(image_size):
     val_ds = tf.data.Dataset.from_tensor_slices((x_test, y_test))
     train_ds_simple = (
         train_ds_simple.map(preprocess_image, num_parallel_calls=AUTO)
-        .batch(BATCH_SIZE)
+        .batch(batch_size)
         .prefetch(AUTO)
     )
     return train_ds_simple, val_ds
 
-def load_dataset_original(train_folder,valid_folder,image_size):
-    batch_size = 32
+def load_dataset_original(train_folder,valid_folder,image_size,batch_size):
     train_datagen = ImageDataGenerator(rotation_range=15,
                                     rescale=1./255,
                                     shear_range=0.1,
