@@ -78,11 +78,13 @@ python train.py --model ${model}  --epochs ${epochs} --num-classes ${num_classes
 - `num-classes`: số class cần phân loại 
 - `batch-size`: batch size của dataset
 - `image-size`: image_size của dataset
-- Review training trên colab cho rõ hơn nhé:
+
+Review training trên colab cho rõ hơn nhé:
 
 <a href="https://colab.research.google.com/drive/1f0w9hqypkrU12ggkD7q8EZMkfDAzEakj#scrollTo=oFrHbd-sR8Rv"><img src="https://storage.googleapis.com/protonx-cloud-storage/colab_favicon_256px.png" width=80> </a>
 
-- Các paper liên quan cần đọc để hỗ trợ đọc hiểu paper trên : 
+Các paper liên quan cần đọc để hỗ trợ đọc hiểu paper trên : 
+
     - [ResNet-Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
     - [MobileNets: Efficient Convolutional Neural Networks for Mobile Vision Applications](https://arxiv.org/abs/1704.04861)
     - [ResNetXt-Aggregated Residual Transformations for Deep Neural Networks](https://arxiv.org/abs/1611.05431)
