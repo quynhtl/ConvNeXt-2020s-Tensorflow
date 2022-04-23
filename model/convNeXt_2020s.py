@@ -40,7 +40,7 @@ def Conv_block(inputs, dropout_rate=0.2, layer_scale_init_value=1e-6):
     
     # Tạo gama vectơ có thể học được, hàm này được sử dụng để thêm các biến trọng số vào một lớp, lớp khởi tạo các lớp.
     gama = layers.Layer().add_weight(shape=[dim],  # Số lượng vectơ giống như số kênh bản đồ tính năng đầu ra
-                                   initializer=tf.initializers.Constant(layer_scale_init_value),  # 权重初始化
+                                   initializer=tf.initializers.Constant(layer_scale_init_value),  
                                    dtype=tf.float32,  # chỉ định kiểu dữ liệu
                                    trainable=True)  # Các thông số có thể huấn luyện, trọng lượng có thể được điều chỉnh bằng cách nhân giống ngược
 
