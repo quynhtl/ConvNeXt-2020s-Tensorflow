@@ -23,8 +23,9 @@ Sơ đồ mô hình mạng ConvNeXt 2020s:
 </p>
 
 
-Training script:
-- Đầu tiên cần git clone model về máy:
+### Training script:
+
+Đầu tiên cần git clone model về máy:
 
 ```python
 
@@ -32,14 +33,20 @@ Training script:
 
 ```
 
-- Nếu bạn chạy trên tập dataset cifar10 thì dùng câu lệnh sau, bộ dataset này có 10 classes : 
+ Nếu bạn chạy trên tập dataset cifar10 có sẵn thì dùng câu lệnh sau, bộ dataset này có 10 classes : 
 
 ```python
 
 python train.py --model ${model}  --epochs ${epochs} 
 ```
-ex : model có (resnet50, resnetxt, convneXt_2020s )
-- Nếu bạn chạy trên tập dataset của các bạn thì dùng câu lệnh sau, ví dụ tập dog_cat:
+Ví dụ:
+
+```python
+
+python train.py --model convnext --epochs 10 
+
+``` 
+Nếu bạn chạy trên tập dataset của các bạn thì dùng câu lệnh sau, ví dụ tập dog_cat:
 
 ```python
 
@@ -64,6 +71,13 @@ main_folder = './data'
 python train.py --model ${model}  --epochs ${epochs} --num-classes ${num_classes} --train-folder ${train-folder  --valid-folder  ${valid-folder}
 
 ```
+-  `model`: chọn model để training (convnext, resnet50, resnext50)
+- `train-folder`: tập training data
+- `valid-folder`: tập validation data
+- `model-folder`: nơi lưu lại model sau khi train xong
+- `num-classes`: số class cần phân loại 
+- `batch-size`: batch size của dataset
+- `image-size`: image_size của dataset
 - Review training trên colab cho rõ hơn nhé:
 
 <a href="https://colab.research.google.com/drive/1f0w9hqypkrU12ggkD7q8EZMkfDAzEakj#scrollTo=oFrHbd-sR8Rv"><img src="https://storage.googleapis.com/protonx-cloud-storage/colab_favicon_256px.png" width=80> </a>
