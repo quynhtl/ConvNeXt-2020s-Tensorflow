@@ -16,7 +16,7 @@ Trong những năm qua, Transformer đã thường xuyên vượt qua CV. Lần 
 - Bản tóm tắt ý chính của paper: [ConvNeXt 2020s sơ lược ](https://docs.google.com/document/d/1IoyAoVkJoccDNPd1csJ1SD3LWshVJb_sB1A3_ylDZf8/edit?usp=sharing)
 
 
-Sơ đồ mô hình mạng ConvNeXt 2020s: 
+### Sơ đồ mô hình mạng ConvNeXt 2020s: 
 
 <p align="center">
 <img src='./data/test/c4.png' width=960 height = 540 class="center">
