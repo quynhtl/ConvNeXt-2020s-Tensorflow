@@ -15,8 +15,10 @@ def load_dataset_cifar10(image_size):
         return image, label
 
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
-    train_ds_simple = tf.data.Dataset.from_tensor_slices((x_train, y_train))
+    y_train = tf.keras.utils.to_categorical(y_train, num_classes=10)
+    y_test = tf.keras.utils.to_categorical(y_test, num_classes=10)
 
+    train_ds_simple = tf.data.Dataset.from_tensor_slices((x_train, y_train))
     val_ds = tf.data.Dataset.from_tensor_slices((x_test, y_test))
     train_ds_simple = (
         train_ds_simple.map(preprocess_image, num_parallel_calls=AUTO)
