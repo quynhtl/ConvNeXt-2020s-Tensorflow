@@ -22,10 +22,51 @@ Sơ đồ mô hình mạng ConvNeXt 2020s:
 <img src='./data/test/c4.png' width=960 height = 540 class="center">
 </p>
 
-Review training on colab - Testing_library ConvNeXt-2020s.ipynb:
+
+Training script:
+- Đầu tiên cần git clone model về máy:
+
+```python
+
+!git clone https://github.com/quynhtl/ConvNeXt-2020s-Tensorflow.git
+
+```
+
+- Nếu bạn chạy trên tập dataset cifar10 thì dùng câu lệnh sau, bộ dataset này có 10 classes : 
+
+```python
+
+python train.py --model ${model}  --epochs ${epochs} 
+```
+ex : model có (resnet50, resnetxt, convneXt_2020s )
+- Nếu bạn chạy trên tập dataset của các bạn thì dùng câu lệnh sau, ví dụ tập dog_cat:
+
+```python
+
+train_folder = './data/cats_and_dogs_filtered/train'
+valid_folder = './data/cats_and_dogs_filtered/validation'
+
+!wget --no-check-certificate \
+  https://storage.googleapis.com/mledu-datasets/cats_and_dogs_filtered.zip \
+  -O ./cats_and_dogs_filtered.zip
+
+```
+```python
+
+# Giải nén dữ liệu
+main_folder = './data'
+!unzip -q cats_and_dogs_filtered.zip -d $main_folder
+
+```
+
+```python
+
+python train.py --model ${model}  --epochs ${epochs} --num-classes ${num_classes} --train-folder ${train-folder  --valid-folder  ${valid-folder}
+
+```
+- Review training trên colab cho rõ hơn nhé:
 
 <a href="https://colab.research.google.com/drive/1f0w9hqypkrU12ggkD7q8EZMkfDAzEakj#scrollTo=oFrHbd-sR8Rv"><img src="https://storage.googleapis.com/protonx-cloud-storage/colab_favicon_256px.png" width=80> </a>
-
 
 - Các paper liên quan cần đọc để hỗ trợ đọc hiểu paper trên : 
     - [ResNet-Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
