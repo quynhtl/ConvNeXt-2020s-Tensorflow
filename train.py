@@ -86,7 +86,7 @@ if __name__ == "__main__":
     model.compile(optimizer=optimizer, loss='categorical_crossentropy',
                                         metrics=['accuracy'])
     model.fit(train_ds,
-                epochs=args.epoch,
+                epochs=args.epochs,
                 callbacks=callbacks,
                 validation_data=val_ds,
                 verbose=1)
