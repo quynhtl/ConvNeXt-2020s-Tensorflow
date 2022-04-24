@@ -35,7 +35,7 @@ if __name__ == "__main__":
                         help='Where training data is located')
     parser.add_argument('--valid-folder', default='', type=str,
                         help='Where validation data is located')
-    parser.add_argument('--model-folder', default='.output/',
+    parser.add_argument('--model-folder', default='./model/',
                         type=str, help='Folder to save trained model')
 
     args = parser.parse_args()
