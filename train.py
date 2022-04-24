@@ -76,20 +76,17 @@ if __name__ == "__main__":
     # Traning
 
     optimizer = tfa.optimizers.AdamW(learning_rate=args.lr, weight_decay=args.weight_decay)
-    learning_rate_reduction = ReduceLROnPlateau(monitor='val_accuracy', 
-                                        patience=5, 
-                                        verbose=1, 
-                                        factor=0.5, 
-                                        min_lr=0.00001)
-    checkpoint = ModelCheckpoint(filepath=args.model_folder + 'model.h5', monitor='val_accuracy', mode='max', save_best_only=True, save_weights_only=False, verbose=1)
-    callbacks = [learning_rate_reduction, checkpoint] 
-    model.compile(optimizer=optimizer, loss='categorical_crossentropy',
-                                        metrics=['accuracy'])
+    model.compile(optimizer, loss='categorical_crossentropy',
+                  metrics=['accuracy'])
+
+    # Traning
     model.fit(train_ds,
-                epochs=args.epochs,
-                callbacks=callbacks,
-                validation_data=val_ds,
-                verbose=1)
+              epochs=args.epochs,
+              batch_size=args.batch_size,
+              validation_data=val_ds)
+
+    # Save model
+    model.save(args.model_folder)
 
     
     
